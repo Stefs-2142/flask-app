@@ -1,5 +1,6 @@
 from flask import Flask, render_template, flash, redirect, url_for
-from flask_login import LoginManager, login_user, logout_user
+from flask_login import LoginManager, login_user, login_required, logout_user
+from flask_login import current_user
 
 from webapp.model import db, News, User
 from webapp.weather import weather_by_city
@@ -26,11 +27,12 @@ def create_app():
         title = "Новости Python"
         weather = weather_by_city(app.config['WEATHER_DEFAULT_CITY'])
         news_list = News.query.order_by(News.published.desc()).all()
-        print(news_list)
         return render_template('index.html', page_title=title, weather=weather, news_list=news_list)
 
     @app.route('/login')
     def login():
+        if current_user.is_authenticated:
+            return redirect(url_for('index'))
         title = 'Авторизация'
         login_form = LoginForm()
         return render_template('login.html', page_title=title, form=login_form)
@@ -54,4 +56,11 @@ def create_app():
         flash('Вы успешно разлогинились.')
         return redirect(url_for('index'))
 
+    @app.route('/admin')
+    @login_required
+    def admin_index():
+        if current_user.is_admin:
+            return 'Hi Admin'
+        else:
+            return 'Ты не админ!'
     return app
