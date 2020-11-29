@@ -1,14 +1,12 @@
-from flask import Blueprint
+from flask import Blueprint, render_template
 
-from flask_login import current_user, login_required
+from webapp.user.decoratord import admin_required
 
 blueprint = Blueprint('admin', __name__, url_prefix='/admin')
 
 
 @blueprint.route('/')
-@login_required
+@admin_required
 def admin_index():
-    if current_user.is_admin:
-        return 'Hi Admin'
-    else:
-        return 'Ты не админ!'
+    title = 'Панель управления'
+    return render_template('admin/index.html', page_title=title)
