@@ -28,12 +28,10 @@ def get_python_news():
             title = news.find('a').text
             url = news.find('a')['href']
             published = news.find('time').text
-            print(published)
             try:
                 published = datetime.strptime(published, '%b. %d, %Y')
-            except ValueError as er:
+            except ValueError:
                 published = datetime.now()
-                print(er)
             save_news(title, url, published)
 
 
