@@ -21,6 +21,8 @@ cssselect==1.1.0
 cycler==0.10.0
 dateparser==0.7.6
 decorator==4.4.2
+dnspython==2.0.0
+email-validator==1.1.2
 emoji==0.6.0
 fake-useragent==0.1.11
 flake8==3.8.3
