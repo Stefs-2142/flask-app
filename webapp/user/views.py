@@ -8,13 +8,16 @@ from webapp.db import db
 from webapp.user.forms import LoginForm, RegistrationForm
 from webapp.user.models import User
 
+from webapp.utils import get_redirect_target
+
+
 blueprint = Blueprint('user', __name__, url_prefix='/users')
 
 
 @blueprint.route('/login')
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('news.index'))
+        return redirect(get_redirect_target())
     title = 'Авторизация'
     login_form = LoginForm()
     return render_template('user/login.html', page_title=title, form=login_form)
@@ -44,7 +47,7 @@ def logout():
 @blueprint.route('/register')
 def register():
     if current_user.is_authenticated:
-        return redirect(url_for('news.index'))
+        return redirect(get_redirect_target())
     title = 'Регистрация'
     reg_form = RegistrationForm()
     return render_template('user/regisration.html', page_title=title, form=reg_form)
